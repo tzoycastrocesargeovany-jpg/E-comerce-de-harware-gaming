@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS GAMING — Hardware de Alto Rendimiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ===================================================
+     VARIABLES — GOLDEN RATIO PHI = 1.618
+     =================================================== */
+  :root {
+    --phi: 1.618;
+
+    /* Layout — Proporción Áurea */
+    --screen: 1440px;
+    --main-width: 889.98px;     /* 1440 ÷ 1.618 */
+    --sidebar-width: 550.02px;  /* 1440 − 889.98 */
+    --header-height: 113.26px;  /* 70 × 1.618 */
+    --header-pad-v: 21.63px;    /* (113.26 − 70) ÷ 2 */
+    --hero-height: 1779.88px;   /* 1100 × 1.618 */
+    --bp-tablet: 720px;         /* 1440 ÷ 2 */
+
+    /* Tipografía */
+    --text-base: 16px;
+    --text-h2: 25.88px;         /* 16 × 1.618 */
+    --text-h1: 41.87px;         /* 25.88 × 1.618 */
+
+    /* Colores */
+    --bg: #0A0A0C;
+    --bg-2: #111116;
+    --bg-3: #18181F;
+    --surface: #1E1E28;
+    --border: rgba(255,255,255,0.07);
+    --accent: #E8FF3A;
+    --accent-2: #FF4D6D;
+    --text-primary: #F0F0F5;
+    --text-secondary: #8A8A9E;
+    --text-muted: #4A4A5E;
+
+    /* Transiciones */
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ===================================================
+     RESET & BASE
+     =================================================== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: var(--text-base);
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.618; /* phi como line-height */
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 { font-size: var(--text-h1); line-height: 1.1; }
+  h2 { font-size: var(--text-h2); line-height: 1.2; }
+
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ===================================================
+     HEADER — 113.26px height, 21.63px padding vertical
+     =================================================== */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-height);
+    padding: var(--header-pad-v) 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 10, 12, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    transition: background 0.3s var(--ease);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 70px; /* logo base */
+  }
+
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    flex-shrink: 0;
+    transition: transform 0.4s var(--ease);
+  }
+
+  .logo:hover .logo-mark { transform: rotate(72deg); }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+  }
+
+  .logo-text span { color: var(--accent); }
+
+  /* Nav Desktop */
+  .nav-desktop {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .nav-desktop a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-desktop a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s var(--ease);
+  }
+
+  .nav-desktop a:hover { color: var(--text-primary); }
+  .nav-desktop a:hover::after { width: 100%; }
+
+  .nav-cta {
+    padding: 10px 24px;
+    background: var(--accent);
+    color: var(--bg) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.04em;
+    border-radius: 4px;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+
+  .nav-cta:hover {
+    background: #d4e833 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .nav-cta::after { display: none !important; }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all 0.3s var(--ease);
+    transform-origin: center;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile menu */
+  .nav-mobile {
+    display: none;
+    position: fixed;
+    top: var(--header-height);
+    left: 0; right: 0;
+    background: rgba(10,10,12,0.98);
+    backdrop-filter: blur(20px);
+    padding: 32px 48px;
+    flex-direction: column;
+    gap: 24px;
+    border-bottom: 1px solid var(--border);
+    z-index: 999;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s var(--ease);
+  }
+
+  .nav-mobile.open {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .nav-mobile a {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+
+  .nav-mobile a:hover { color: var(--accent); }
+
+  /* ===================================================
+     BREADCRUMB / 3-CLICK TRACKING
+     =================================================== */
+  .breadcrumb {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30,30,40,0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    z-index: 900;
+    transition: all 0.3s var(--ease);
+    white-space: nowrap;
+  }
+
+  .breadcrumb .bc-item {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  .breadcrumb .bc-item:hover { color: var(--accent); }
+  .breadcrumb .bc-sep { color: var(--text-muted); }
+  .breadcrumb .bc-item.active { color: var(--accent); font-weight: 600; }
+
+  /* ===================================================
+     HERO — height 1779.88px
+     =================================================== */
+  #hero {
+    position: relative;
+    height: var(--hero-height);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: var(--header-height);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(232,255,58,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 60%, rgba(255,77,109,0.04) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  /* Grid de fondo */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-inner {
+    position: relative;
+    width: 100%;
+    max-width: var(--screen);
+    margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-content { max-width: 560px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,255,58,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    margin-bottom: 32px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-size: clamp(36px, 4vw, var(--text-h1));
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .hero-title .accent { color: var(--accent); }
+  .hero-title .line-2 { display: block; color: var(--text-secondary); font-weight: 400; }
+
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 16px 36px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-primary:hover {
+    background: #d4e833;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(232,255,58,0.25);
+  }
+
+  .btn-ghost {
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* PC 3D Visual */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pc-frame {
+    position: relative;
+    width: 420px;
+    height: 500px;
+    perspective: 1200px;
+  }
+
+  .pc-3d {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: rotatePc 20s linear infinite;
+    transition: animation-play-state 0.3s;
+  }
+
+  .pc-3d:hover { animation-play-state: paused; }
+
+  @keyframes rotatePc {
+    0% { transform: rotateY(0deg) rotateX(5deg); }
+    100% { transform: rotateY(360deg) rotateX(5deg); }
+  }
+
+  /* SVG PC tower illustrado */
+  .pc-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 60px rgba(232,255,58,0.15))
+            drop-shadow(0 0 120px rgba(232,255,58,0.06));
+  }
+
+  .hero-stats {
+    position: absolute;
+    bottom: 120px;
+    left: 48px;
+    display: flex;
+    gap: 48px;
+  }
+
+  .stat-item { text-align: left; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ===================================================
+     LAYOUT PRINCIPAL — main 889.98px + sidebar 550.02px
+     =================================================== */
+  #main-layout {
+    max-width: var(--screen);
+    margin: 0 auto;
+    padding: 120px 48px;
+    display: grid;
+    grid-template-columns: var(--main-width) var(--sidebar-width);
+    gap: 0;
+    align-items: start;
+  }
+
+  /* ===================================================
+     COMPONENTES — sección principal
+     =================================================== */
+  #components {
+    padding-right: 64px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title { margin-bottom: 16px; }
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 64px;
+    max-width: 620px;
+  }
+
+  /* Component Cards — Gestalt: Proximidad, Semejanza */
+  .components-grid {
+    display: grid;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .comp-card {
+    background: var(--bg-2);
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: start;
+    cursor: pointer;
+    transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comp-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s var(--ease);
+  }
+
+  .comp-card:hover {
+    background: var(--bg-3);
+  }
+
+  .comp-card:hover::before { transform: scaleY(1); }
+
+  .comp-icon-wrap {
+    width: 72px;
+    height: 72px;
+    background: var(--surface);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    transition: background 0.25s;
+    border: 1px solid var(--border);
+  }
+
+  .comp-card:hover .comp-icon-wrap {
+    background: rgba(232,255,58,0.08);
+    border-color: rgba(232,255,58,0.2);
+  }
+
+  .comp-info {}
+
+  .comp-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+
+  .comp-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+
+  /* Etiquetas de requisitos */
+  .comp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .tag-spec {
+    background: rgba(232,255,58,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(232,255,58,0.2);
+  }
+
+  .tag-req {
+    background: rgba(255,77,109,0.08);
+    color: #ff6b84;
+    border: 1px solid rgba(255,77,109,0.2);
+  }
+
+  .tag-compat {
+    background: rgba(80,200,255,0.08);
+    color: #7dd3fc;
+    border: 1px solid rgba(80,200,255,0.15);
+  }
+
+  .comp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+  }
+
+  .comp-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,58,0.05);
+    transform: translateX(4px);
+  }
+
+  .comp-btn svg {
+    transition: transform 0.25s var(--ease);
+  }
+
+  .comp-btn:hover svg { transform: translateX(4px); }
+
+  /* Expanded panel */
+  .comp-expanded {
+    display: none;
+    margin-top: 24px;
+    padding: 24px;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    animation: fadeIn 0.3s var(--ease);
+  }
+
+  .comp-expanded.open { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .expanded-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .spec-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .spec-key {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .spec-val {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ===================================================
+     SIDEBAR — 550.02px
+     =================================================== */
+  #sidebar {
+    width: var(--sidebar-width);
+    position: sticky;
+    top: calc(var(--header-height) + 40px);
+    padding-left: 64px;
+    border-left: 1px solid var(--border);
+  }
+
+  .sidebar-featured {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .featured-img-wrap {
+    height: 280px;
+    background: linear-gradient(135deg, #111116 0%, #1a1a22 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(232,255,58,0.08) 0%, transparent 60%);
+  }
+
+  .featured-pc-large {
+    width: 180px;
+    height: 240px;
+    filter: drop-shadow(0 0 30px rgba(232,255,58,0.2));
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .featured-body {
+    padding: 28px;
+  }
+
+  .featured-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .featured-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .featured-price {
+    font-size: 32px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .featured-price sub {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .featured-cta {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s var(--ease);
+    text-align: center;
+  }
+
+  .featured-cta:hover {
+    background: #d4e833;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(232,255,58,0.25);
+  }
+
+  /* Sidebar specs mini */
+  .sidebar-specs {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .sidebar-specs h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+
+  .mini-spec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .mini-spec:last-child { border-bottom: none; }
+
+  .mini-key {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mini-val {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Progress bars */
+  .perf-bar-wrap {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .perf-bar-wrap h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .perf-row {
+    margin-bottom: 20px;
+  }
+
+  .perf-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .perf-label { color: var(--text-secondary); }
+  .perf-pct { color: var(--accent); font-weight: 600; font-family: 'Syne', sans-serif; }
+
+  .perf-track {
+    height: 4px;
+    background: var(--surface);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .perf-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #b8e814);
+    border-radius: 2px;
+    transform-origin: left;
+    animation: fillBar 1.5s var(--ease) forwards;
+    transform: scaleX(0);
+  }
+
+  @keyframes fillBar {
+    to { transform: scaleX(1); }
+  }
+
+  /* ===================================================
+     SECCIÓN SPECS COMPLETAS (debajo del layout)
+     =================================================== */
+  #full-specs {
+    max-width: var(--screen);
+    margin: 0 auto;
+    padding: 80px 48px 160px;
+    border-top: 1px solid var(--border);
+  }
+
+  .specs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .spec-card {
+    background: var(--bg-2);
+    padding: 32px;
+    transition: background 0.25s;
+  }
+
+  .spec-card:hover { background: var(--bg-3); }
+
+  .spec-card-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+    line-height: 1;
+  }
+
+  .spec-card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .spec-card-model {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .spec-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ===================================================
+     FOOTER
+     =================================================== */
+  #footer {
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .footer-brand span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ===================================================
+     MODAL — detalle componente
+     =================================================== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUp 0.4s var(--ease);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    padding: 32px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .modal-close {
+    width: 36px; height: 36px;
+    background: var(--surface);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 18px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--border); color: var(--text-primary); }
+
+  .modal-body { padding: 32px 40px 40px; }
+
+  .modal-specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .modal-spec-item {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+
+  .modal-spec-key {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .modal-spec-val {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  /* ===================================================
+     RESPONSIVE — Tablet 720px
+     =================================================== */
+  @media (max-width: 720px) {
+    :root {
+      --header-height: 72px;
+      --header-pad-v: 16px;
+    }
+
+    #header { padding: var(--header-pad-v) 24px; }
+
+    .nav-desktop { display: none; }
+    .hamburger { display: flex; }
+
+    .hero-inner {
+      grid-template-columns: 1fr;
+      padding: 0 24px;
+      gap: 48px;
+    }
+
+    .hero-visual { order: -1; }
+
+    .pc-frame { width: 280px; height: 340px; }
+
+    .hero-stats {
+      left: 24px;
+      gap: 24px;
+      bottom: 80px;
+    }
+
+    #main-layout {
+      grid-template-columns: 1fr;
+      padding: 64px 24px;
+      gap: 48px;
+    }
+
+    #components { padding-right: 0; }
+
+    #sidebar {
+      width: 100%;
+      position: static;
+      padding-left: 0;
+      border-left: none;
+      border-top: 1px solid var(--border);
+      padding-top: 48px;
+    }
+
+    .comp-card {
+      grid-template-columns: 56px 1fr;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    .comp-icon-wrap { width: 52px; height: 52px; font-size: 24px; }
+
+    .specs-grid { grid-template-columns: 1fr; }
+
+    .specs-header { flex-direction: column; gap: 16px; align-items: flex-start; }
+
+    #full-specs { padding: 60px 24px 100px; }
+
+    #footer {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+
+    .expanded-grid { grid-template-columns: 1fr; }
+
+    .modal-overlay { padding: 20px; }
+    .modal-header { padding: 24px; }
+    .modal-body { padding: 24px; }
+    .modal-specs-grid { grid-template-columns: 1fr; }
+
+    .breadcrumb { display: none; }
+  }
+
+  /* ===================================================
+     GESTALT — Figura/fondo: divisor decorativo
+     =================================================== */
+  .phi-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--accent) 50%, var(--border) 70%, transparent);
+    margin: 80px 0;
+    position: relative;
+  }
+
+  .phi-divider::after {
+    content: 'φ';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg);
+    padding: 0 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Continuidad: línea de progreso del scroll */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 9999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(232,255,58,0.5);
+  }
+</style>
+</head>
+<body>
+
+<!-- Scroll progress (Gestalt: Continuidad) -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ===== HEADER ===== -->
+<header id="header">
+  <a href="#" class="logo" onclick="trackClick('Inicio')">
+    <div class="logo-mark"></div>
+    <div class="logo-text">NEXUS<span>.</span>HW</div>
+  </a>
+
+  <nav class="nav-desktop">
+    <a href="#components" onclick="trackClick('Componentes')">Componentes</a>
+    <a href="#full-specs" onclick="trackClick('Especificaciones')">Especificaciones</a>
+    <a href="#" onclick="trackClick('Builds')">Builds</a>
+    <a href="#" onclick="trackClick('Soporte')">Soporte</a>
+    <a href="#" class="nav-cta" onclick="trackClick('Configurar PC')">Configurar PC →</a>
+  </nav>
+
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile nav -->
+<nav class="nav-mobile" id="mobileNav">
+  <a href="#components" onclick="trackClick('Componentes');closeMenu()">Componentes</a>
+  <a href="#full-specs" onclick="trackClick('Especificaciones');closeMenu()">Especificaciones</a>
+  <a href="#" onclick="trackClick('Builds');closeMenu()">Builds</a>
+  <a href="#" onclick="trackClick('Soporte');closeMenu()">Soporte</a>
+  <a href="#" onclick="trackClick('Configurar PC');closeMenu()">Configurar PC →</a>
+</nav>
+
+<!-- 3-click breadcrumb -->
+<div class="breadcrumb" id="breadcrumb" style="display:none;">
+  <span class="bc-item active" id="bc-1">Inicio</span>
+  <span class="bc-sep">›</span>
+  <span class="bc-item" id="bc-2">—</span>
+  <span class="bc-sep" id="bc-sep2" style="display:none">›</span>
+  <span class="bc-item" id="bc-3" style="display:none">—</span>
+</div>
+
+<!-- ===== HERO — 1779.88px ===== -->
+<section id="hero" style="height: var(--hero-height);">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Hardware Gaming Pro · 2025</div>
+      <h1 class="hero-title">
+        Ingeniería<br>
+        <span class="accent">Áurea</span><br>
+        <span class="line-2">en cada componente</span>
+      </h1>
+      <p class="hero-desc">
+        Cada pieza diseñada con precisión milimétrica. Construimos máquinas que respetan
+        la proporción perfecta entre rendimiento, temperatura y eficiencia energética.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="trackClick('Ver Configuraciones');scrollTo('#components')">
+          Ver Componentes
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M9 4L13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="btn-ghost" onclick="trackClick('Ver Build Completo')">
+          Build Completo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2C4.68 2 2 4.68 2 8s2.68 6 6 6 6-2.68 6-6-2.68-6-6-6zm0 10.5A4.5 4.5 0 118 3.5a4.5 4.5 0 010 9zm.75-7.25H7.25v3l2.62 1.57.75-1.23-2.12-1.26V5.25z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="pc-frame">
+        <div class="pc-3d">
+          <!-- PC Tower SVG ilustrado -->
+          <svg class="pc-svg" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Torre principal -->
+            <rect x="60" y="20" width="180" height="360" rx="12" fill="#18181F" stroke="#2A2A38" stroke-width="1.5"/>
+            <!-- Panel frontal -->
+            <rect x="70" y="30" width="160" height="340" rx="8" fill="#1E1E28"/>
+            <!-- Ventana lateral -->
+            <rect x="80" y="50" width="140" height="200" rx="6" fill="#111116" stroke="#2A2A38" stroke-width="1"/>
+            <!-- Efecto RGB en ventana -->
+            <rect x="82" y="52" width="136" height="196" rx="5" fill="url(#rgbGrad)" opacity="0.6"/>
+            <!-- Fans -->
+            <circle cx="150" cy="150" r="55" fill="#13131A" stroke="#2A2A38" stroke-width="1"/>
+            <circle cx="150" cy="150" r="40" fill="#0F0F14" stroke="#232330" stroke-width="1"/>
+            <circle cx="150" cy="150" r="8" fill="#1E1E28"/>
+            <!-- Fan blades -->
+            <g opacity="0.7">
+              <path d="M150 110 Q170 120 165 150 Q155 135 150 110Z" fill="#2A2A3E"/>
+              <path d="M190 150 Q180 170 150 165 Q165 155 190 150Z" fill="#2A2A3E"/>
+              <path d="M150 190 Q130 180 135 150 Q145 165 150 190Z" fill="#2A2A3E"/>
+              <path d="M110 150 Q120 130 150 135 Q135 145 110 150Z" fill="#2A2A3E"/>
+            </g>
+            <!-- RGB ring fan -->
+            <circle cx="150" cy="150" r="52" stroke="url(#rgbRing)" stroke-width="3" fill="none" opacity="0.8"/>
+            <!-- GPU -->
+            <rect x="85" y="270" width="130" height="40" rx="4" fill="#141420" stroke="#232330" stroke-width="1"/>
+            <rect x="90" y="275" width="80" height="30" rx="3" fill="#1A1A26"/>
+            <circle cx="190" cy="290" r="10" fill="#111116" stroke="#232330"/>
+            <!-- Botón power -->
+            <circle cx="180" cy="360" r="12" fill="#1A1A26" stroke="var(--accent-color, #E8FF3A)" stroke-width="1.5"/>
+            <circle cx="180" cy="360" r="6" fill="#E8FF3A" opacity="0.8"/>
+            <!-- USB ports -->
+            <rect x="95" y="345" width="16" height="8" rx="1" fill="#111116" stroke="#2A2A38"/>
+            <rect x="115" y="345" width="16" height="8" rx="1" fill="#111116" stroke="#2A2A38"/>
+            <!-- Badge logo -->
+            <text x="150" y="308" text-anchor="middle" font-family="Syne, sans-serif" font-size="10" fill="#E8FF3A" font-weight="700" letter-spacing="2">NEXUS</text>
+            <defs>
+              <linearGradient id="rgbGrad" x1="82" y1="52" x2="218" y2="248" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#E8FF3A" stop-opacity="0.15"/>
+                <stop offset="33%" stop-color="#FF4D6D" stop-opacity="0.1"/>
+                <stop offset="66%" stop-color="#50C8FF" stop-opacity="0.1"/>
+                <stop offset="100%" stop-color="#E8FF3A" stop-opacity="0.05"/>
+              </linearGradient>
+              <linearGradient id="rgbRing" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#E8FF3A"/>
+                <stop offset="33%" stop-color="#FF4D6D"/>
+                <stop offset="66%" stop-color="#50C8FF"/>
+                <stop offset="100%" stop-color="#E8FF3A"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Componentes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">φ</div>
+      <div class="stat-label">Proporción</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">240W</div>
+      <div class="stat-label">TDP Total</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Explorar</span>
+  </div>
+</section>
+
+<!-- ===== LAYOUT PRINCIPAL ===== -->
+<div id="main-layout">
+
+  <!-- === MAIN CONTENT 889.98px === -->
+  <main id="components">
+    <div class="section-label">Arquitectura de Hardware</div>
+    <h2 class="section-title">Cada componente,<br>ingeniería de precisión</h2>
+    <p class="section-desc">
+      Diseñado con la misma proporción que guía la arquitectura de la naturaleza.
+      Siete componentes. Una máquina.
+    </p>
+
+    <!-- Gestalt: Proximidad — tarjetas agrupadas por categoría -->
+    <div class="components-grid">
+
+      <!-- 1. PLACA BASE -->
+      <div class="comp-card" id="card-motherboard">
+        <div class="comp-icon-wrap">🖥️</div>
+        <div class="comp-info">
+          <div class="comp-name">Placa Base</div>
+          <p class="comp-desc">El esqueleto del sistema. Conecta cada componente bajo un único bus de datos de alta velocidad PCIe 5.0, con soporte nativo para DDR5 y NVMe Gen5.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">ATX Full</span>
+            <span class="tag tag-spec">PCIe 5.0</span>
+            <span class="tag tag-req">Socket AM5</span>
+            <span class="tag tag-compat">DDR5 Compatible</span>
+            <span class="tag tag-req">Wi-Fi 7</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('motherboard')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. CPU -->
+      <div class="comp-card" id="card-cpu">
+        <div class="comp-icon-wrap">⚡</div>
+        <div class="comp-info">
+          <div class="comp-name">Procesador CPU</div>
+          <p class="comp-desc">El cerebro. Arquitectura Zen 5 con 16 núcleos físicos, 32 hilos simultáneos y tecnología 3D V-Cache que multiplica el caché L3 por φ en cada generación.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">16 Núcleos / 32 Hilos</span>
+            <span class="tag tag-spec">5.8 GHz Boost</span>
+            <span class="tag tag-req">TDP 170W</span>
+            <span class="tag tag-compat">PCIe 5.0</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('cpu')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. RAM -->
+      <div class="comp-card" id="card-ram">
+        <div class="comp-icon-wrap">🧠</div>
+        <div class="comp-info">
+          <div class="comp-name">Memoria RAM</div>
+          <p class="comp-desc">Velocidad que elimina cuellos de botella. DDR5-6400 con latencias optimizadas por CL30, en configuración dual-channel que maximiza el ancho de banda hacia la CPU.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">64 GB DDR5</span>
+            <span class="tag tag-spec">6400 MHz</span>
+            <span class="tag tag-req">Dual Channel</span>
+            <span class="tag tag-compat">XMP 3.0</span>
+            <span class="tag tag-req">CL30</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('ram')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. ALMACENAMIENTO -->
+      <div class="comp-card" id="card-storage">
+        <div class="comp-icon-wrap">💾</div>
+        <div class="comp-info">
+          <div class="comp-name">Disco de Almacenamiento</div>
+          <p class="comp-desc">NVMe Gen5 en formato M.2 2280. Velocidades de lectura secuencial que superan los 14,000 MB/s, haciendo irrelevante el tiempo de carga en cualquier juego moderno.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">2 TB NVMe Gen5</span>
+            <span class="tag tag-spec">14,000 MB/s Lectura</span>
+            <span class="tag tag-req">M.2 2280</span>
+            <span class="tag tag-compat">DRAM Cache</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('storage')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. MONITOR -->
+      <div class="comp-card" id="card-monitor">
+        <div class="comp-icon-wrap">🖱️</div>
+        <div class="comp-info">
+          <div class="comp-name">Monitor Gaming</div>
+          <p class="comp-desc">Panel OLED de 27" con resolución QHD y tasa de refresco de 240 Hz. Tiempo de respuesta de 0.03 ms que garantiza que cada frame importa exactamente cuando importa.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">27" QHD OLED</span>
+            <span class="tag tag-spec">240 Hz</span>
+            <span class="tag tag-req">0.03 ms GtG</span>
+            <span class="tag tag-compat">G-Sync + FreeSync</span>
+            <span class="tag tag-req">HDR10+</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('monitor')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6. TECLADO -->
+      <div class="comp-card" id="card-keyboard">
+        <div class="comp-icon-wrap">⌨️</div>
+        <div class="comp-info">
+          <div class="comp-name">Teclado Mecánico</div>
+          <p class="comp-desc">Switches óptico-mecánicos con actuación a 1.2 mm y debounce de 0.2 ms. Construcción en aluminio anodizado con polling de 8000 Hz que elimina cualquier latencia perceptible.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">TKL 80%</span>
+            <span class="tag tag-spec">8000 Hz Polling</span>
+            <span class="tag tag-req">Switches Ópticos</span>
+            <span class="tag tag-compat">RGB por tecla</span>
+            <span class="tag tag-req">Hot-Swap</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('keyboard')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 7. MOUSE -->
+      <div class="comp-card" id="card-mouse">
+        <div class="comp-icon-wrap">🖱️</div>
+        <div class="comp-info">
+          <div class="comp-name">Ratón Gaming</div>
+          <p class="comp-desc">Sensor óptico de 36,000 DPI con aceleración cero y seguimiento a 750 IPS. Peso de 58g en estructura honeycomb que respeta la proporción ergonómica de la mano humana.</p>
+          <div class="comp-tags">
+            <span class="tag tag-spec">36,000 DPI</span>
+            <span class="tag tag-spec">58g Ultraligero</span>
+            <span class="tag tag-req">750 IPS</span>
+            <span class="tag tag-compat">Inalámbrico 4K Hz</span>
+          </div>
+          <button class="comp-btn" onclick="openModal('mouse')">
+            Ver especificaciones completas
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /components-grid -->
+  </main>
+
+  <!-- === SIDEBAR 550.02px === -->
+  <aside id="sidebar">
+
+    <!-- Featured -->
+    <div class="sidebar-featured">
+      <div class="featured-img-wrap">
+        <svg class="featured-pc-large" viewBox="0 0 180 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="140" height="220" rx="10" fill="#18181F" stroke="#2A2A38" stroke-width="1.5"/>
+          <rect x="28" y="18" width="124" height="204" rx="6" fill="#1E1E28"/>
+          <rect x="34" y="26" width="112" height="130" rx="4" fill="#111116" stroke="#2A2A38"/>
+          <rect x="36" y="28" width="108" height="126" rx="3" fill="url(#rgbG2)" opacity="0.7"/>
+          <circle cx="90" cy="91" r="38" fill="#13131A" stroke="#232330"/>
+          <circle cx="90" cy="91" r="27" fill="#0F0F14" stroke="#232330"/>
+          <circle cx="90" cy="91" r="6" fill="#1E1E28"/>
+          <circle cx="90" cy="91" r="36" stroke="url(#rgbR2)" stroke-width="2.5" fill="none" opacity="0.9"/>
+          <g opacity="0.6">
+            <path d="M90 53Q104 61 100 91Q93 77 90 53Z" fill="#2A2A3E"/>
+            <path d="M128 91Q120 105 90 101Q104 94 128 91Z" fill="#2A2A3E"/>
+            <path d="M90 129Q76 121 80 91Q87 105 90 129Z" fill="#2A2A3E"/>
+            <path d="M52 91Q60 77 90 81Q76 88 52 91Z" fill="#2A2A3E"/>
+          </g>
+          <rect x="38" y="170" width="104" height="28" rx="3" fill="#141420" stroke="#232330"/>
+          <rect x="43" y="174" width="62" height="20" rx="2" fill="#1A1A26"/>
+          <circle cx="135" cy="184" r="8" fill="#111116" stroke="#232330"/>
+          <circle cx="130" cy="214" r="9" fill="#1A1A26" stroke="#E8FF3A" stroke-width="1.2"/>
+          <circle cx="130" cy="214" r="4" fill="#E8FF3A" opacity="0.8"/>
+          <rect x="48" y="208" width="12" height="6" rx="1" fill="#111116" stroke="#2A2A38"/>
+          <rect x="63" y="208" width="12" height="6" rx="1" fill="#111116" stroke="#2A2A38"/>
+          <text x="90" y="196" text-anchor="middle" font-family="Syne, sans-serif" font-size="7" fill="#E8FF3A" font-weight="700" letter-spacing="2">NEXUS</text>
+          <defs>
+            <linearGradient id="rgbG2" x1="36" y1="28" x2="148" y2="154" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#E8FF3A" stop-opacity="0.2"/>
+              <stop offset="50%" stop-color="#FF4D6D" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#50C8FF" stop-opacity="0.08"/>
+            </linearGradient>
+            <linearGradient id="rgbR2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#E8FF3A"/>
+              <stop offset="50%" stop-color="#FF4D6D"/>
+              <stop offset="100%" stop-color="#50C8FF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="featured-body">
+        <div class="featured-label">Build Destacado · 2025</div>
+        <div class="featured-name">NEXUS APEX PRO</div>
+        <div class="featured-price">$3,499 <sub>USD</sub></div>
+        <button class="featured-cta" onclick="trackClick('Comprar Nexus Apex Pro')">Configurar y Comprar →</button>
+      </div>
+    </div>
+
+    <!-- Quick specs -->
+    <div class="sidebar-specs">
+      <h3>Especificaciones Rápidas</h3>
+      <div class="mini-spec">
+        <span class="mini-key">⚡ CPU</span>
+        <span class="mini-val">Ryzen 9 9950X</span>
+      </div>
+      <div class="mini-spec">
+        <span class="mini-key">🎮 GPU</span>
+        <span class="mini-val">RTX 5080 Ti</span>
+      </div>
+      <div class="mini-spec">
+        <span class="mini-key">🧠 RAM</span>
+        <span class="mini-val">64 GB DDR5-6400</span>
+      </div>
+      <div class="mini-spec">
+        <span class="mini-key">💾 Storage</span>
+        <span class="mini-val">2 TB NVMe Gen5</span>
+      </div>
+      <div class="mini-spec">
+        <span class="mini-key">🔌 PSU</span>
+        <span class="mini-val">1000W 80+ Platinum</span>
+      </div>
+      <div class="mini-spec">
+        <span class="mini-key">❄️ Cooling</span>
+        <span class="mini-val">360mm AIO Liquid</span>
+      </div>
+    </div>
+
+    <!-- Performance bars (Gestalt: Semejanza) -->
+    <div class="perf-bar-wrap">
+      <h3>Índice de Rendimiento</h3>
+
+      <div class="perf-row">
+        <div class="perf-header">
+          <span class="perf-label">Gaming 4K</span>
+          <span class="perf-pct">97%</span>
+        </div>
+        <div class="perf-track">
+          <div class="perf-fill" style="width:97%; animation-delay:0.1s"></div>
+        </div>
+      </div>
+
+      <div class="perf-row">
+        <div class="perf-header">
+          <span class="perf-label">Renderizado 3D</span>
+          <span class="perf-pct">94%</span>
+        </div>
+        <div class="perf-track">
+          <div class="perf-fill" style="width:94%; animation-delay:0.2s"></div>
+        </div>
+      </div>
+
+      <div class="perf-row">
+        <div class="perf-header">
+          <span class="perf-label">Streaming</span>
+          <span class="perf-pct">99%</span>
+        </div>
+        <div class="perf-track">
+          <div class="perf-fill" style="width:99%; animation-delay:0.3s"></div>
+        </div>
+      </div>
+
+      <div class="perf-row">
+        <div class="perf-header">
+          <span class="perf-label">IA / ML Local</span>
+          <span class="perf-pct">89%</span>
+        </div>
+        <div class="perf-track">
+          <div class="perf-fill" style="width:89%; animation-delay:0.4s"></div>
+        </div>
+      </div>
+
+      <div class="perf-row">
+        <div class="perf-header">
+          <span class="perf-label">Eficiencia Térmica</span>
+          <span class="perf-pct">92%</span>
+        </div>
+        <div class="perf-track">
+          <div class="perf-fill" style="width:92%; animation-delay:0.5s"></div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div><!-- /main-layout -->
+
+<!-- ===== SPECS GRID ===== -->
+<section id="full-specs">
+  <div class="phi-divider"></div>
+
+  <div class="specs-header">
+    <div>
+      <div class="section-label">Referencia Técnica</div>
+      <h2>Tabla de Especificaciones</h2>
+    </div>
+    <button class="btn-ghost" onclick="trackClick('Descargar PDF')">
+      Descargar PDF
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M7 2v7M4 6l3 3 3-3M2 10v2h10v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="specs-grid">
+    <div class="spec-card">
+      <span class="spec-card-icon">🖥️</span>
+      <div class="spec-card-name">Placa Base</div>
+      <div class="spec-card-model">ASUS ROG Crosshair X870E</div>
+      <div class="spec-card-desc">ATX · Socket AM5 · 4× DDR5 · PCIe 5.0 x16 · Wi-Fi 7 · Bluetooth 5.4 · USB4 40Gbps</div>
+    </div>
+    <div class="spec-card">
+      <span class="spec-card-icon">⚡</span>
+      <div class="spec-card-name">Procesador</div>
+      <div class="spec-card-model">AMD Ryzen 9 9950X</div>
+      <div class="spec-card-desc">16C / 32T · 5.7 GHz Max Boost · 80MB L3 (3D V-Cache) · TDP 170W · Zen 5 Architecture</div>
+    </div>
+    <div class="spec-card">
+      <span class="spec-card-icon">🎮</span>
+      <div class="spec-card-name">Tarjeta Gráfica</div>
+      <div class="spec-card-model">NVIDIA RTX 5080 Ti</div>
+      <div class="spec-card-desc">24 GB GDDR7 · DLSS 4 · Ray Tracing Gen 4 · 500W TDP · PCIe 5.0 x16 · 4× DisplayPort 2.1</div>
+    </div>
+    <div class="spec-card">
+      <span class="spec-card-icon">🧠</span>
+      <div class="spec-card-name">Memoria RAM</div>
+      <div class="spec-card-model">G.Skill Trident Z5 RGB</div>
+      <div class="spec-card-desc">64 GB (2×32 GB) · DDR5-6400 · CL30 · Dual Channel · XMP 3.0 · EXPO · 1.35V</div>
+    </div>
+    <div class="spec-card">
+      <span class="spec-card-icon">💾</span>
+      <div class="spec-card-name">Almacenamiento</div>
+      <div class="spec-card-model">Samsung 990 Pro 2TB Gen5</div>
+      <div class="spec-card-desc">NVMe Gen5 · 14,000 MB/s Lectura · 13,500 MB/s Escritura · M.2 2280 · DRAM Cache 2GB</div>
+    </div>
+    <div class="spec-card">
+      <span class="spec-card-icon">❄️</span>
+      <div class="spec-card-name">Refrigeración</div>
+      <div class="spec-card-model">NZXT Kraken Elite 360</div>
+      <div class="spec-card-desc">AIO Líquida · Radiador 360mm · 3× Fans ARGB 120mm · 2800 RPM Max · LCD Display cabezal</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="footer">
+  <div class="footer-brand">NEXUS<span>.</span>HW</div>
+  <div class="footer-links">
+    <a href="#" onclick="trackClick('Política de Privacidad')">Privacidad</a>
+    <a href="#" onclick="trackClick('Garantía')">Garantía</a>
+    <a href="#" onclick="trackClick('Soporte Técnico')">Soporte</a>
+    <a href="#" onclick="trackClick('Contacto')">Contacto</a>
+  </div>
+  <div class="footer-copy">© 2025 NEXUS HW · Diseñado con φ = 1.618</div>
+</footer>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px" id="modalLabel">Componente</div>
+        <h2 id="modalTitle" style="font-size:24px">—</h2>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="modalDesc" style="color:var(--text-secondary);line-height:1.7;margin-bottom:24px;font-weight:300"></p>
+      <div class="modal-specs-grid" id="modalSpecs"></div>
+      <div style="margin-top:32px;display:flex;gap:16px">
+        <button class="btn-primary" onclick="trackClick('Añadir al Build');closeModal()" style="flex:1;justify-content:center">
+          Añadir al Build
+        </button>
+        <button class="btn-ghost" onclick="closeModal()" style="justify-content:center">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  /* ---- Datos de componentes ---- */
+  const components = {
+    motherboard: {
+      label: 'Placa Base',
+      title: 'ASUS ROG Crosshair X870E Hero',
+      desc: 'La plataforma más avanzada para AMD Ryzen 9000. Con VRM de 20+2 fases rated a 110A cada una, soporta overclocking extremo manteniendo temperaturas estables. El backplane PCIe 5.0 ofrece 128 GB/s bidireccionales hacia la GPU.',
+      specs: [
+        { k: 'Socket', v: 'AM5 (LGA 1718)' },
+        { k: 'Chipset', v: 'AMD X870E' },
+        { k: 'Factor de Forma', v: 'ATX (305×244mm)' },
+        { k: 'Ranuras RAM', v: '4× DDR5 hasta 256 GB' },
+        { k: 'PCIe', v: '2× PCIe 5.0 x16 / 1× x4' },
+        { k: 'M.2', v: '5× M.2 NVMe Gen5' },
+        { k: 'USB Traseros', v: '2× USB4 40G, 4× USB 3.2 G2' },
+        { k: 'Red', v: '2.5GbE + Wi-Fi 7 + BT 5.4' }
+      ]
+    },
+    cpu: {
+      label: 'Procesador',
+      title: 'AMD Ryzen 9 9950X',
+      desc: 'La arquitectura Zen 5 redefine el rendimiento single-core con IPC mejorado en 16% respecto a Zen 4. Los 16 núcleos físicos manejan simultáneamente juego, streaming y codificación de video sin ninguna degradación perceptible.',
+      specs: [
+        { k: 'Núcleos / Hilos', v: '16C / 32T' },
+        { k: 'Frecuencia Base', v: '4.3 GHz' },
+        { k: 'Frecuencia Boost', v: '5.7 GHz' },
+        { k: 'Caché L3', v: '64 MB (128 MB 3D V-Cache)' },
+        { k: 'TDP / TDP Max', v: '170W / 230W' },
+        { k: 'Proceso', v: 'TSMC 3nm (CCDs)' },
+        { k: 'PCIe', v: 'PCIe 5.0 (24 lanes CPU)' },
+        { k: 'Memoria', v: 'DDR5-5600 nativo' }
+      ]
+    },
+    ram: {
+      label: 'Memoria RAM',
+      title: 'G.Skill Trident Z5 RGB DDR5-6400',
+      desc: 'El dual-channel DDR5-6400 proporciona 102.4 GB/s de ancho de banda, alimentando sin restricciones al procesador en workloads de alta intensidad. Los módulos funcionan a 1.35V con disipador aluminizado de doble cámara.',
+      specs: [
+        { k: 'Capacidad', v: '64 GB (2×32 GB)' },
+        { k: 'Velocidad', v: 'DDR5-6400 MHz' },
+        { k: 'Latencia', v: 'CL30-38-38-96' },
+        { k: 'Voltaje', v: '1.35V' },
+        { k: 'Ancho de Banda', v: '102.4 GB/s (dual)' },
+        { k: 'XMP / EXPO', v: 'XMP 3.0 + EXPO' },
+        { k: 'Factor de Forma', v: 'DIMM 288 pines' },
+        { k: 'RGB', v: 'ARGB direccionable' }
+      ]
+    },
+    storage: {
+      label: 'Almacenamiento',
+      title: 'Samsung 990 Pro 2TB NVMe Gen5',
+      desc: 'La primera generación de NVMe PCIe 5.0 masivo. La interfaz de alta velocidad aprovecha el controlador propietario de Samsung con cache DRAM de 2 GB para mantener velocidades sostenidas en transferencias de archivos grandes.',
+      specs: [
+        { k: 'Capacidad', v: '2 TB' },
+        { k: 'Interfaz', v: 'PCIe 5.0 x4 NVMe 2.0' },
+        { k: 'Lectura Secuencial', v: '14,000 MB/s' },
+        { k: 'Escritura Secuencial', v: '13,500 MB/s' },
+        { k: 'IOPS Lectura', v: '2,000,000' },
+        { k: 'Factor de Forma', v: 'M.2 2280' },
+        { k: 'Cache DRAM', v: '2 GB LPDDR4' },
+        { k: 'TBW', v: '1,200 TBW (5 años garantía)' }
+      ]
+    },
+    monitor: {
+      label: 'Monitor',
+      title: 'LG UltraGear 27GS95QE OLED',
+      desc: 'El panel OLED QD elimina el backlight para ofrecer negros absolutos y contraste infinito. A 240 Hz la fluidez es indistinguible de la realidad. El procesador de imagen integrado escala señales HDR10+ con tono mapeado en hardware.',
+      specs: [
+        { k: 'Panel', v: '27" QD-OLED' },
+        { k: 'Resolución', v: '2560×1440 QHD' },
+        { k: 'Frecuencia', v: '240 Hz' },
+        { k: 'Tiempo Resp.', v: '0.03 ms GtG' },
+        { k: 'HDR', v: 'DisplayHDR True Black 400' },
+        { k: 'Contraste', v: '1,500,000:1 (infinito)' },
+        { k: 'Sync', v: 'G-Sync Compatible + FreeSync' },
+        { k: 'Conectividad', v: '2× HDMI 2.1 + 1× DP 1.4' }
+      ]
+    },
+    keyboard: {
+      label: 'Teclado',
+      title: 'Wooting 60HE+ Optical',
+      desc: 'La tecnología Hall Effect óptica mide la posición del switch de forma analógica, permitiendo configurar la distancia de actuación entre 0.1 y 4.0 mm por tecla. El polling de 8000 Hz envía 8 reportes por milisegundo al sistema.',
+      specs: [
+        { k: 'Distribución', v: '60% (61 teclas)' },
+        { k: 'Switch', v: 'Lekker Hall Effect Óptico' },
+        { k: 'Actuación', v: '0.1–4.0 mm (configurable)' },
+        { k: 'Polling Rate', v: '8000 Hz (0.125 ms)' },
+        { k: 'Conexión', v: 'USB-C desmontable' },
+        { k: 'Carcasa', v: 'Aluminio 6061 anodizado' },
+        { k: 'N-Key', v: 'Total Rollover (NKRO)' },
+        { k: 'Software', v: 'Wooting App (open source)' }
+      ]
+    },
+    mouse: {
+      label: 'Ratón',
+      title: 'Lamzu Atlantis Mini Pro V2',
+      desc: 'El sensor PAW3395 con aceleración ≤±1% a cualquier velocidad garantiza precisión absoluta. La estructura honeycomb logra 58g sin comprometer la rigidez estructural. La batería de 300 mAh dura 70 horas en modo 4K Hz.',
+      specs: [
+        { k: 'Sensor', v: 'PAW3395 Óptico' },
+        { k: 'DPI', v: '100 – 36,000 (50 DPI steps)' },
+        { k: 'Polling Rate', v: '4000 Hz inalámbrico' },
+        { k: 'IPS Máximo', v: '750 IPS' },
+        { k: 'Peso', v: '58 g (sin cable)' },
+        { k: 'Batería', v: '300 mAh / 70h a 1000 Hz' },
+        { k: 'Switches', v: 'Kailh GM 8.0 (80M clics)' },
+        { k: 'Conexión', v: '2.4GHz + Wired USB-C' }
+      ]
+    }
+  };
+
+  /* ---- 3-Click Tracking ---- */
+  const clickHistory = [];
+
+  function trackClick(name) {
+    clickHistory.push(name);
+    if (clickHistory.length > 3) clickHistory.shift();
+    updateBreadcrumb();
+  }
+
+  function updateBreadcrumb() {
+    const bc = document.getElementById('breadcrumb');
+    if (clickHistory.length === 0) { bc.style.display = 'none'; return; }
+    bc.style.display = 'flex';
+    const ids = ['bc-1','bc-2','bc-3'];
+    const seps = ['bc-sep2'];
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (clickHistory[i]) {
+        el.textContent = clickHistory[i];
+        el.style.display = 'inline';
+        if (i === clickHistory.length - 1) {
+          el.className = 'bc-item active';
+        } else {
+          el.className = 'bc-item';
+        }
+      } else {
+        el.style.display = 'none';
+      }
+    });
+    document.getElementById('bc-sep2').style.display = clickHistory.length >= 2 ? 'inline' : 'none';
+    const bc3 = document.getElementById('bc-3');
+    bc3.style.display = clickHistory.length >= 3 ? 'inline' : 'none';
+  }
+
+  /* ---- Modal ---- */
+  function openModal(id) {
+    const data = components[id];
+    if (!data) return;
+    trackClick(data.title);
+    document.getElementById('modalLabel').textContent = data.label;
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalDesc').textContent = data.desc;
+    const grid = document.getElementById('modalSpecs');
+    grid.innerHTML = data.specs.map(s =>
+      `<div class="modal-spec-item"><div class="modal-spec-key">${s.k}</div><div class="modal-spec-val">${s.v}</div></div>`
+    ).join('');
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(e) {
+    if (e && e.target !== document.getElementById('modalOverlay')) return;
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ---- Hamburger ---- */
+  function toggleMenu() {
+    const btn = document.getElementById('hamburgerBtn');
+    const nav = document.getElementById('mobileNav');
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburgerBtn').classList.remove('open');
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  /* ---- Scroll progress ---- */
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (scrollTop / docHeight) * 100;
+    document.getElementById('scrollProgress').style.width = pct + '%';
+  });
+
+  /* ---- Smooth scroll utility ---- */
+  function scrollTo(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ---- Nav link tracking ---- */
+  document.querySelectorAll('.nav-desktop a, .nav-mobile a').forEach(a => {
+    a.addEventListener('click', function() {
+      if (!this.getAttribute('onclick')) {
+        trackClick(this.textContent.trim());
+      }
+    });
+  });
+
+  /* ---- Keyboard esc to close modal ---- */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+</body>
+</html>
